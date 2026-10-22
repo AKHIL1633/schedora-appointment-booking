@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -72,7 +73,19 @@ const steps = [
   },
 ];
 
-const previewSlots = ["09:00", "09:30", "10:00", "11:30", "14:00", "15:30"];
+const unsplash = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?w=1200&q=75&auto=format&fit=crop`;
+
+const industries = [
+  { title: "Hair Salons", image: unsplash("1521590832167-7bcbfaa6381f") },
+  { title: "Barbershops", image: unsplash("1503951914875-452162b0f3f1") },
+  { title: "Spa & Wellness", image: unsplash("1544161515-4ab6ce6db874") },
+  { title: "Skincare Studios", image: unsplash("1570172619644-dfd03ed5d881") },
+  { title: "Clinics", image: unsplash("1519494026892-80bbd2d6fd0d") },
+  { title: "Consultants", image: unsplash("1600880292203-757bb62b4baf") },
+];
+
+const previewSlots =["09:00", "09:30", "10:00", "11:30", "14:00", "15:30"];
 
 const LandingPage = () => {
   return (
@@ -166,8 +179,19 @@ const LandingPage = () => {
             </div>
 
             {/* Booking preview */}
-            <div className="relative">
-              <div className="rounded-[2rem] border border-border bg-card shadow-2xl p-6 sm:p-8">
+            <div className="relative lg:pt-36">
+              <div className="hidden lg:block absolute top-0 right-[-2rem] w-[85%] h-[70%] rounded-[2rem] overflow-hidden border border-border">
+                <Image
+                  src={unsplash("1560066984-138dadb4c035")}
+                  alt="Modern salon interior with styling chairs"
+                  fill
+                  priority
+                  sizes="45vw"
+                  className="object-cover"
+                />
+              </div>
+
+              <div className="relative rounded-[2rem] border border-border bg-card shadow-2xl p-6 sm:p-8 lg:w-[88%]">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-11 h-11 rounded-2xl bg-muted flex items-center justify-center">
@@ -263,6 +287,37 @@ const LandingPage = () => {
           </div>
         </section>
 
+        {/* Industries */}
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+            Who it&apos;s for
+          </p>
+          <h2 className="mt-3 text-4xl font-black tracking-tighter">
+            Built for every business that runs on appointments
+          </h2>
+
+          <div className="mt-12 grid grid-cols-2 lg:grid-cols-3 gap-4">
+            {industries.map(({ title, image }) => (
+              <div
+                key={title}
+                className="group relative aspect-[4/3] rounded-[1.75rem] overflow-hidden border border-border"
+              >
+                <Image
+                  src={image}
+                  alt={title}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, 50vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                <span className="absolute left-5 bottom-4 text-lg sm:text-xl font-black tracking-tight text-white">
+                  {title}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* How it works */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-20">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
@@ -299,8 +354,8 @@ const LandingPage = () => {
 
         {/* CTA */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-24">
-          <div className="rounded-[2.5rem] bg-primary text-primary-foreground px-6 sm:px-12 py-14 flex flex-col md:flex-row md:items-center justify-between gap-8">
-            <div>
+          <div className="rounded-[2.5rem] bg-primary text-primary-foreground overflow-hidden grid md:grid-cols-[1fr_auto_320px] md:items-center gap-8">
+            <div className="px-6 sm:px-12 pt-14 md:py-14">
               <h2 className="text-3xl sm:text-4xl font-black tracking-tighter">
                 Ready to fill your calendar?
               </h2>
@@ -309,7 +364,7 @@ const LandingPage = () => {
                 bookings today.
               </p>
             </div>
-            <Link href="/auth/register">
+            <Link href="/auth/register" className="px-6 sm:px-12 md:px-0">
               <Button
                 size="lg"
                 variant="secondary"
@@ -319,6 +374,15 @@ const LandingPage = () => {
                 <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>
+            <div className="relative h-56 md:h-full md:min-h-[280px]">
+              <Image
+                src={unsplash("1506784983877-45594efa4cbe")}
+                alt="Planner with a monthly calendar and a cup of coffee"
+                fill
+                sizes="(min-width: 768px) 320px, 100vw"
+                className="object-cover"
+              />
+            </div>
           </div>
         </section>
       </main>
@@ -330,7 +394,17 @@ const LandingPage = () => {
             <span className="font-bold text-foreground">Schedora</span>
             <span>· Scheduling Suite</span>
           </div>
-          <span>© {new Date().getFullYear()} Schedora. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} Schedora · Photos from{" "}
+            <a
+              href="https://unsplash.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              Unsplash
+            </a>
+          </span>
         </div>
       </footer>
     </div>
